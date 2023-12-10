@@ -41,7 +41,8 @@ namespace UniversityHelper.FileService.Business.Commands.Files
 
       if (fileSource == FileSource.Project)
       {
-        if (!await _accessValidator.HasRightsAsync(Rights.AddEditRemoveProjects))
+        // TODO Rework
+        //if (!await _accessValidator.HasRightsAsync(Rights.AddEditRemoveProjects))
         {
           filesIds = await _projectService.CheckFilesAsync(filesIds);
         }

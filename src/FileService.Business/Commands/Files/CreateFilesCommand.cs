@@ -66,21 +66,22 @@ namespace UniversityHelper.FileService.Business.Commands.Files
       FileAccessType access,
       IFormFileCollection uploadedFiles)
     {
-      if (fileSource == FileSource.Project)
-      {
-        (ProjectStatusType projectStatus, ProjectUserRoleType? projectUserRole) = await _projectService.GetProjectUserRole(entityId, _httpContextAccessor.HttpContext.GetUserId());
-        if (!projectStatus.Equals(ProjectStatusType.Active)
-          || !(projectUserRole.HasValue && projectUserRole.Value.Equals(ProjectUserRoleType.Manager))
-          && !await _accessValidator.HasRightsAsync(Rights.AddEditRemoveProjects))
-        {
-          return _responseCreator.CreateFailureResponse<List<Guid>>(HttpStatusCode.Forbidden);
-        }
-      }
-      else if (!await _accessValidator.HasRightsAsync(Rights.AddEditRemoveWiki)
-        || !_wikiService.CheckArticlesAsync(new List<Guid> { entityId }).Result.Any())
-      {
-        return _responseCreator.CreateFailureResponse<List<Guid>>(HttpStatusCode.Forbidden);
-      }
+      // TODO Rework
+      //if (fileSource == FileSource.Project)
+      //{
+      //  (ProjectStatusType projectStatus, ProjectUserRoleType? projectUserRole) = await _projectService.GetProjectUserRole(entityId, _httpContextAccessor.HttpContext.GetUserId());
+      //  if (!projectStatus.Equals(ProjectStatusType.Active)
+      //    || !(projectUserRole.HasValue && projectUserRole.Value.Equals(ProjectUserRoleType.Manager))
+      //    && !await _accessValidator.HasRightsAsync(Rights.AddEditRemoveProjects))
+      //  {
+      //    return _responseCreator.CreateFailureResponse<List<Guid>>(HttpStatusCode.Forbidden);
+      //  }
+      //}
+      //else if (!await _accessValidator.HasRightsAsync(Rights.AddEditRemoveWiki)
+      //  || !_wikiService.CheckArticlesAsync(new List<Guid> { entityId }).Result.Any())
+      //{
+      //  return _responseCreator.CreateFailureResponse<List<Guid>>(HttpStatusCode.Forbidden);
+      //}
 
       ValidationResult validationResult = await _validator.ValidateAsync(uploadedFiles);
       if (!validationResult.IsValid)
